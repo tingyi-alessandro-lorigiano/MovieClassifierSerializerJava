@@ -137,6 +137,7 @@ public class Movie implements Serializable {
 			   this.year==anotherMovie.year;
 	}
 	
+	@Override
 	public String toString() {
 		return  "Year:\t"+this.year + "\n"
 			   + "Title:\t"+this.title +"\n"
@@ -745,13 +746,72 @@ public class Movie implements Serializable {
 	}
 
 
-	public static Movie[][] do_part3(String manifestFile){
+	public static Movie[][] do_part3(String part3_manifest){
 		
+		try {
+		String line;
+		BufferedReader part3_manifestReader = new BufferedReader(new FileReader(part3_manifest));
+		int fileCount = 0;
+		while ((line = part3_manifestReader.readLine()) != null) {
+            fileCount++;
+        }
+		part3_manifestReader.close();
 		
-		ObjectInputStream ming = new ObjectInputStream(new FileInputStream(movie.getGenre() + ".ser"));
-		ming.readObject(ming);
-		return 
+		Movie[][] allMovies = new Movie[fileCount][];
+	    int index = 0;
+	    
+	    BufferedReader br = new BufferedReader(new FileReader(part3_manifest));
+	    while ((line = br.readLine()) != null) {
+	        FileInputStream fileInput = new FileInputStream(line);
+	        System.out.println(line);
+	        
+            File serFile = new File(line);
+            if (serFile.length() == 0) {
+                System.out.println("Skipping deserialization for empty file: " + serFile.getName());
+                continue;
+            }
+            
+	        ObjectInputStream movieInput = new ObjectInputStream(fileInput);
+	        
+	        Movie[] movies = new Movie[100]; // Initial capacity, adjust as needed
+            int count = 0;
+            
+            // Read movies from the binary file
+            while (true) {
+                try {
+                    Movie movie = (Movie) movieInput.readObject();
+                    if (count == movies.length) {
+                        // Resize the array if needed
+                        Movie[] newArray = new Movie[movies.length * 2];
+                        System.arraycopy(movies, 0, newArray, 0, movies.length);
+                        movies = newArray;
+                    }
+                    movies[count++] = movie;
+                } catch (EOFException e) {
+                    break; // End of file reached
+                }
+            }
+            
+        
+        
+	        // Trim the array to remove unused slots
+	        Movie[] trimmedMovies = new Movie[count];
+	        System.arraycopy(movies, 0, trimmedMovies, 0, count);
+	        allMovies[index++] = trimmedMovies;
+	        movieInput.close();
+				    	}
+	    br.close();
+			    return allMovies;
+		} catch (IOException | ClassNotFoundException e) {
+		    e.printStackTrace();
+		    return null;
+		}
 	}
+	        
+
+	
+		
+		
 //	
 	
 	
@@ -772,6 +832,17 @@ public class Movie implements Serializable {
 		
 	
 		String part3_manifest = do_part2(part2_manifest);
+		
+		Movie[][] allMovies = do_part3(part3_manifest);
+		Movie[] moviefile = allMovies[2]; 
+
+		for (Movie movie : moviefile) {
+		    System.out.println(movie); // Assuming Movie class overrides toString() method
+		}
+//
+//		
+//		
+		System.out.println(moviefile[0].toString());
 		/*
 								do_part3(part3_manifest );
 																   
