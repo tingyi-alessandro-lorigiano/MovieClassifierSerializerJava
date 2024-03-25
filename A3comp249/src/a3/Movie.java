@@ -670,11 +670,40 @@ public class Movie implements Serializable {
 	
 	public static String do_part2(String file) {
 	    try {
+	    	//Initializing serialized files
+	    	
+	    	
+	    	
+	    		
+    		try {
+    	    	BufferedWriter manifestpart3Writer = new BufferedWriter(new FileWriter("part3_manifest.txt"));
+
+    			for (String genre : genres) {
+	
+		            FileOutputStream fossy = new FileOutputStream(genre+".ser");
+		            fossy.close();
+		            
+		            manifestpart3Writer.write(genre + ".ser\n");
+		            
+		    		}
+	    		
+    			manifestpart3Writer.close();
+
+    			}
+    		catch(FileNotFoundException e) {
+    			System.out.println("file not found");
+    		}
+    		catch (IOException e) {
+    			System.out.println("Error");
+    		}
+
+	    	
+	    	
 	        BufferedReader b1 = new BufferedReader(new FileReader(file));
 	        String line;
 	        
 	        BufferedReader badRecordsReader = new BufferedReader(new FileReader("bad_records.txt"));
-
+	        
 	        // Read error lines
 	        String[] errorlines = new String[lines("bad_records.txt")];
 	        int errorIndex = 0;
@@ -701,8 +730,8 @@ public class Movie implements Serializable {
 		                bro.writeObject(movie);
 		                bro.close();
 		                System.out.println("Serialized movie to: " + movie.getGenre() + ".ser");
-//	            		ObjectInputStream ming = new ObjectInputStream(new FileInputStream(movie.getGenre() + ".ser"));
-//	            		ming.readObject(ming);
+	            		
+		                // Write to the 
 	            	}
 	                
 	            }
@@ -716,8 +745,14 @@ public class Movie implements Serializable {
 	}
 
 
-	
-	
+	public static Movie[][] do_part3(String manifestFile){
+		
+		
+		ObjectInputStream ming = new ObjectInputStream(new FileInputStream(movie.getGenre() + ".ser"));
+		ming.readObject(ming);
+		return 
+	}
+//	
 	
 	
 	
@@ -734,8 +769,6 @@ public class Movie implements Serializable {
 		String part1_manifest = "part1_manifest.txt";
 		String part2_manifest = do_part1(part1_manifest);
 		
-		
-
 		
 	
 		String part3_manifest = do_part2(part2_manifest);
