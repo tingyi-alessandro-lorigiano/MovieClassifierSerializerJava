@@ -1,6 +1,8 @@
 package a3;
 import java.io.*;
-import java.util.Arrays;
+
+import java.util.Scanner;
+
 
 
 
@@ -20,6 +22,7 @@ public class Movie implements Serializable {
 										"Drama","Crime","Biography","Horror","Action",
 										"Documentary","Fantasy","Mystery","Sci-fi",
 										"Family","Romance","Thriller","Western"};
+	
 	protected static String[] ratings= {"PG","Unrated","G","R","PG-13","NC-17"};
 	
 	protected static String genre_message = "Invalid Genre. Valid genres are the following:"
@@ -48,7 +51,114 @@ public class Movie implements Serializable {
 											+ "\nR"
 											+ "\nPG-13"
 											+ "\nNC-17";
-	
+
+	protected static int[] sizes={0,73,2,28,43,11,10,11,71,7,3,3,0,0,0,1,0};
+	public static String submenu = "------------------------------"
+								  +"\n\tGenre Sub-Menu\n"
+								  +"------------------------------"
+								  +"\n1\tmusical\t\t\t(0 movies)"
+								  +"\n2\tcomedy\t\t\t(73 movies)"
+								  +"\n3\tanimation\t\t(2 movies)"
+								  +"\n4\tadventure\t\t(28 movies)"
+								  +"\n5\tdrama\t\t\t(43 movies)"
+								  +"\n6\tcrime\t\t\t(11 movies)"
+								  +"\n7\tbiography\t\t(10 movies)"
+								  +"\n8\thorror\t\t\t(11 movies)"
+								  +"\n9\taction\t\t\t(71 movies)"
+								  +"\n10\tdocumentary\t\t(7 movies)"
+								  +"\n11\tfantasy\t\t\t(3 movies)"
+								  +"\n12\tmystery\t\t\t(3 movies)"
+								  +"\n13\tsci-fi\t\t\t(0 movies)"
+								  +"\n14\tfamily\t\t\t(0 movies)"
+								  +"\n15\twestern\t\t\t(0 movies)"
+								  +"\n16\tromance\t\t\t(1 movies)"
+								  +"\n17\tthriller\t\t(0 movies)"
+								  +"\n18\tExit"
+								  +"\n---------------------"
+								  +"\nEnter Your Choice:";
+
+	public static void mainmenu(String type,int number){
+				  String mainmenu="-----------------------------"
+								 +"\n\tMain Menu\n"
+								 +"-----------------------------"
+								 +"\ns\tSelect a movie array to navigate"
+								 +"\nn\tNavigate "+type+" movies ("+number+" records)"
+								 +"\nx\tExit\n"
+								 +"-----------------------------"
+								 +"\n\n\nEnter Your Choice:";
+		System.out.println(mainmenu);
+		}
+
+	public static void navigate_message(String type,int number){
+		String navigate ="Navigating "+type+" movies ("+number+")\n"
+						+"Enter Your Choice:";
+		System.out.println(navigate);
+	}
+
+	public static void do_part3(String manifest){
+		Scanner sc=new Scanner(System.in);
+		int option=0;
+		String opt="";
+		int range=0;
+		
+		
+		do{
+			System.out.println(submenu);
+			option = sc.nextInt();
+			if(option!=18){
+			do{
+			mainmenu(genres[option-1],sizes[option-1]);
+			opt=sc.next();
+			if(opt.equals("n")){
+			int start=0;
+			do{
+				navigate_message(genres[option-1],sizes[option-1] );
+				range=sc.nextInt();
+				
+				
+				Movie[][] all_movies = make_arrays(manifest);
+				if(range>0){
+					for(int i=0;i<range;start++,i++){
+						try{
+							if(all_movies[option-1]!=null) 
+								System.out.println(all_movies[option-1][start]);
+							else
+								System.out.println("Empty Section");
+						}catch(IndexOutOfBoundsException e){
+							System.out.println("EOF has been reached.");
+						}
+						
+					}
+					
+				}
+				else if(range<0){
+					start+=(range+1);
+					for(int i=0;i<-range;i++,start++){
+						
+						try{
+							if(all_movies[option-1]!=null) 
+							System.out.println(all_movies[option-1][start]);
+						else
+							System.out.println("Empty Section");
+							
+						}catch(IndexOutOfBoundsException e){
+							System.out.println("BOF has been reached");
+							break;
+						}
+					}
+				}
+				else
+					break;
+				
+
+			}while(start!=0);
+		}
+			
+			}while(!opt.equals("x") && !opt.equals("s"));
+		}
+		}while(option!=18 && !opt.equals("x"));
+	}
+
 	public Movie(int year,String title,int duration, String genre,String rating,double score,String director, String actor1,String actor2,String actor3) {
 		this.year=year;
 		this.title=title;
@@ -222,89 +332,90 @@ public class Movie implements Serializable {
 //		
 //	}
 	
-	public static String[] splitStringByCommasIgnoringQuotes(String str) {
-	    // Assuming maximum of 10 parts initially
-	    String[] parts = new String[10];
-	    int partIndex = 0;
-	    StringBuilder currentPart = new StringBuilder();
-	    boolean withinQuotes = false;
-//	    System.out.println(str);
-	    for (int i = 0; i < str.length(); i++) {
-	        char c = str.charAt(i);
-	        
-	        // Choosing (,) as delimiter.
-	        if (c == '"') {
-	            withinQuotes = !withinQuotes;
-	        } else if (c == ',' && !withinQuotes) {
-	            // Add the current part to the array when encountering a comma outside quotes
-	            parts[partIndex++] = currentPart.toString();
-	            currentPart.setLength(0); // Reset the current part
-	            
-	            // Resize the array if needed
-	            if (partIndex >= parts.length) {
-	                parts = resizeArray(parts);
-	            }
-	        } else {
-	            // Append the character to the current part
-	            currentPart.append(c);
-	        }
-	    }
 
-	    // Add the last part if any
-	    if (currentPart.length() > 0) {
-	        parts[partIndex++] = currentPart.toString();
-	    }
 
-	    // Trim the array to the actual number of parts
-	    parts = trimArray(parts, partIndex);
-//	    System.out.println(Arrays.toString(parts));
-	    return parts;
-	}
+    public static String[] splitStringByCommasIgnoringQuotes(String str) {
+        String[] parts = new String[10];
+        int partIndex = 0;
+        String currentPart = "";
+        boolean withinQuotes = false;
 
-	// Method to resize the array
-	private static String[] resizeArray(String[] arr) {
-	    int newSize = arr.length * 2; // Double the size
-	    String[] newArr = new String[newSize];
-	    for (int i = 0; i < arr.length; i++) {
-	        newArr[i] = arr[i];
-	    }
-	    return newArr;
-	}
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (c == '"') {
+                withinQuotes = !withinQuotes;
+            } else if (c == ',' && !withinQuotes) {
+                parts[partIndex++] = currentPart;
+                currentPart = "";
+                if (partIndex >= parts.length) {
+                    parts = resizeArray(parts);
+                }
+            } else {
+                currentPart += c;
+            }
+        }
 
-	// Method to trim the array to the actual number of parts
-	private static String[] trimArray(String[] arr, int size) {
-	    String[] trimmedArr = new String[size];
-	    for (int i = 0; i < size; i++) {
-	        trimmedArr[i] = arr[i];
-	    }
-	    return trimmedArr;
-	}
+        if (!currentPart.isEmpty()) {
+            parts[partIndex++] = currentPart;
+            if (partIndex >= parts.length) {
+                parts = resizeArray(parts);
+            }
+        }
 
-	
-	public static String[] splitStringByCommas(String str) {
-	    String[] parts = new String[10]; // Assuming maximum 10 parts (fields)
-	    int partIndex = 0;
-	    StringBuilder currentPart = new StringBuilder();
-	    boolean withinQuotes = false;
+        parts = trimArray(parts, partIndex);
+        return parts;
+    }
 
-	    for (int i = 0; i < str.length(); i++) {
-	        char c = str.charAt(i);
-	        if (c == '"') {
-	            withinQuotes = !withinQuotes; // Toggle withinQuotes flag
-	            currentPart.append(c);
-	        } else if (c == ',' && !withinQuotes) {
-	            parts[partIndex++] = currentPart.toString(); // Add current part to the array
-	            currentPart.setLength(0); // Reset current part
-	        } else {
-	            currentPart.append(c); // Add character to current part
-	        }
-	    }
+    public static String[] splitStringByCommas(String str) {
+        String[] parts = new String[10];
+        int partIndex = 0;
+        String currentPart = "";
+        boolean withinQuotes = false;
 
-	    // Add the last part
-	    parts[partIndex] = currentPart.toString();
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (c == ',' && !withinQuotes) {
+                parts[partIndex++] = currentPart;
+                currentPart = "";
+                if (partIndex >= parts.length) {
+                    parts = resizeArray(parts);
+                }
+            } else {
+                currentPart += c;
+                if (c == '"') {
+                    withinQuotes = !withinQuotes;
+                }
+            }
+        }
 
-	    return parts;
-	}
+        if (!currentPart.isEmpty()) {
+            parts[partIndex++] = currentPart;
+            if (partIndex >= parts.length) {
+                parts = resizeArray(parts);
+            }
+        }
+
+        parts = trimArray(parts, partIndex);
+        return parts;
+    }
+
+    private static String[] resizeArray(String[] arr) {
+        int newSize = arr.length * 2; // Double the size
+        String[] newArr = new String[newSize];
+        for (int i = 0; i < arr.length; i++) {
+            newArr[i] = arr[i];
+        }
+        return newArr;
+    }
+
+    private static String[] trimArray(String[] arr, int size) {
+        String[] trimmedArr = new String[size];
+        for (int i = 0; i < size; i++) {
+            trimmedArr[i] = arr[i];
+        }
+        return trimmedArr;
+    }
+
 
 
 
@@ -327,14 +438,14 @@ public class Movie implements Serializable {
 			
 			String[] record =  splitStringByCommasIgnoringQuotes(line);
 			
-//			System.out.println(Arrays.toString(record));
+
 			if (record.length<10) 
 			{
 				throw new MissingFieldsException("Syntax Error: ");
 			}
 			else if(record.length>10)
 			{
-//				System.out.println(Arrays.toString(record));
+
 				throw new ExcessFieldsException("Syntax Error: ");
 
 			}
@@ -437,154 +548,108 @@ public class Movie implements Serializable {
 	    }
 	 
 
-//	 public static void a(String file) {
-//		    try {
-//		        BufferedReader a = new BufferedReader(new FileReader(file));
-//		        BufferedReader b = new BufferedReader(new FileReader("bad_records.txt"));
-//
-//		        // Read movie file names
-//		        String line;
-//		        int movieFileCount = 0;
-//		        while ((line = a.readLine()) != null) {
-//		            movieFileCount++;
-//		        }
-//		        // now we have # of movie filesToChec
-//		        a.close();
-//		        
-//		        }
+
 	
-	 public static void a(String file) {
-		    try {
-		        BufferedReader a = new BufferedReader(new FileReader(file));
-		        BufferedReader b = new BufferedReader(new FileReader("bad_records.txt"));
+	 public static void a(String file) throws IOException {
+        FileReader fileReaderA = new FileReader(file);
+        BufferedReader a = new BufferedReader(fileReaderA);
+        
+        FileReader fileReaderB = new FileReader("bad_records.txt");
+        BufferedReader b = new BufferedReader(fileReaderB);
 
-		        // Read movie file names
-		        String line;
-		        int movieFileCount = 0;
-		        while ((line = a.readLine()) != null) {
-		            movieFileCount++;
-		            
-		        }
-		        System.out.println("in a() method.");
-		        System.out.println("moviefileCount" + movieFileCount);
+        // Read movie file names
+        String line;
+        int movieFileCount = 0;
+        while ((line = a.readLine()) != null) {
+            movieFileCount++;
+        }
+       
+        a.close();
+        fileReaderA.close();
 
-		        a.close();
+        FileReader fileReaderC = new FileReader(file);
+        BufferedReader c = new BufferedReader(fileReaderC);
+        String[] moviefiles = new String[movieFileCount];
+        int total_records = 0;
+        for (int i = 0; i < moviefiles.length; i++) {
+            moviefiles[i] = c.readLine();
+            total_records += lines(moviefiles[i]);
+        }
+        c.close();
+        fileReaderC.close();
 
-		        // Read manifest file again to initialize proper array size
-		        a = new BufferedReader(new FileReader(file));
-		        String[] moviefiles = new String[movieFileCount];
-		        int total_records = 0;
-		        for (int i = 0; i < moviefiles.length; i++) {
-		            moviefiles[i] = a.readLine();
-		            total_records += lines(moviefiles[i]);
-		        }
-		        a.close();
+        // Read error lines
+        int errorLinesCount = lines("bad_records.txt");
+        FileReader fileReaderD = new FileReader("bad_records.txt");
+        BufferedReader d = new BufferedReader(fileReaderD);
+        String[] errorlines = new String[errorLinesCount];
+        int errorIndex = 0;
+        while ((line = d.readLine()) != null) {
+            errorlines[errorIndex++] = line;
+        }
+        d.close();
+        fileReaderD.close();
 
-		        // Read error lines
-		        String[] errorlines = new String[lines("bad_records.txt")];
-		        int errorIndex = 0;
-		        while ((line = b.readLine()) != null) {
-		            errorlines[errorIndex++] = line;
-		        }
-		        b.close();
-		        
-		        
-		        // Writing Genre Filenames to Part2_manifest.txt
-		        BufferedWriter part2 = new BufferedWriter(new FileWriter("part2_manifest.txt", true));
-		        for (String genre : genres) {
-		        	part2.write(genre.toLowerCase() + ".csv\n");
-		        }
-		        part2.close();
-		        // PART 2 MANIFEST FILE DONE
-		        
-		        // CREATING EMPTY genre.CSV files
-		        for (String genre : genres) {
-		            String genreFileName = genre.toLowerCase() + ".csv";
-		            BufferedWriter genreFileWriter = new BufferedWriter(new FileWriter(genreFileName, true));
-		            genreFileWriter.close();
-		        }
-		        System.out.println(Arrays.toString(errorlines));
-		        // Now must categorize the records into their .CSV files
-		        for(String inputFile : moviefiles) {
-		        	BufferedReader movieFileReader = new BufferedReader(new FileReader(inputFile));
-		        	while ((line = movieFileReader.readLine()) != null) {
-		        		String[] stringArray = splitStringByCommasIgnoringQuotes(line);
-		        		String movieTitle = stringArray[1];
-		        		String linexxx;
-		        		boolean errorMovie = false;
-				        b = new BufferedReader(new FileReader("bad_records.txt"));
+        // Writing Genre Filenames to Part2_manifest.txt
+        FileWriter fileWriterPart2 = new FileWriter("part2_manifest.txt", true);
+        BufferedWriter part2 = new BufferedWriter(fileWriterPart2);
+        for (String genre : genres) {
+            part2.write(genre.toLowerCase() + ".csv\n");
+        }
+        part2.close();
+        fileWriterPart2.close();
+        // PART 2 MANIFEST FILE DONE
 
-		        		while ((linexxx = b.readLine()) != null) {
-		                    if (linexxx.contains(movieTitle)) {
-		                    	errorMovie = true;
-		                    }
-		                }
-		        		b.close();
-		        		
-		                if (!line.isEmpty() && !errorMovie && splitStringByCommasIgnoringQuotes(line).length ==10) 
-		                {
-		                	
-		                	//line is not empty && line has no errors
-//		                	System.out.println(movieTitle);
-		                	if (movieTitle.equals("Richie Rich")) {
-		                		System.out.println("CUNT" + containsElement(errorlines, movieTitle));
-		                	}
-		                	for(String genre : genres) {
-		                		
-	                	        
-		                	    if (line.contains(genre)) {
-		                	        // Append to the corresponding genre CSV file
-		                	    	String genreFileName = genre.toLowerCase() + ".csv";
-		                	        BufferedWriter genreFileWriter = new BufferedWriter(new FileWriter(genreFileName, true));
-		                	        genreFileWriter.write(line + "\n");
-		                	        genreFileWriter.close();
+        // CREATING EMPTY genre.CSV files
+        for (String genre : genres) {
+            String genreFileName = genre.toLowerCase() + ".csv";
+            FileWriter fileWriterGenre = new FileWriter(genreFileName, true);
+            BufferedWriter genreFileWriter = new BufferedWriter(fileWriterGenre);
+            genreFileWriter.close();
+            fileWriterGenre.close();
+        }
+       
+        // Now must categorize the records into their .CSV files
+        for (String inputFile : moviefiles) {
+            FileReader fileReaderMovie = new FileReader(inputFile);
+            BufferedReader movieFileReader = new BufferedReader(fileReaderMovie);
+            while ((line = movieFileReader.readLine()) != null) {
+                String[] stringArray = splitStringByCommasIgnoringQuotes(line);
+                String movieTitle = stringArray[1];
+                String linexxx;
+                boolean errorMovie = false;
 
-		                	        break; // Break the loop once the line is written to the correct file
-		                	    }
+                FileReader fileReaderE = new FileReader("bad_records.txt");
+                BufferedReader e = new BufferedReader(fileReaderE);
+                while ((linexxx = e.readLine()) != null) {
+                    if (linexxx.contains(movieTitle)) {
+                        errorMovie = true;
+                    }
+                }
+                e.close();
+                fileReaderE.close();
 
-		                	}
-		                }
-			        
-			        	}
-		            movieFileReader.close();
-
-		        }
-		        
-		        // Process records by movie files
-
-//		        for (String movieFile : moviefiles) {
-//		            BufferedReader x = new BufferedReader(new FileReader(movieFile));
-//		            BufferedWriter part2 = new BufferedWriter(new FileWriter("part2_manifest.txt", true));
-//		            String fileName = movieFile.toLowerCase().replace(".txt", ".csv");
-//		            part2.write(fileName + "\n");
-//	            part2.close();
-//		            
-//		            
-//		            
-//		            // AT this point we are opening the CSV input data & writing
-////		            BufferedWriter w = new BufferedWriter(new FileWriter(fileName));
-////		            while ((line = x.readLine()) != null) {
-////		                if (!line.isEmpty() && !containsElement(errorlines, line)) {
-////		                	System.out.println("line:/n" + line);
-////		                    String[] record = line.split(",");
-////		                    for (String genre : genres) {
-////		                        if (containsElement(record, genre)) {
-////		                            w.write(line);
-////		                            w.newLine();
-////		                            break;
-////		                        }
-////		                    }
-////		                }
-////		            }
-////		            x.close();
-////		            part2.close();
-////		            w.close();
-//		        }
-
-		    } catch (IOException e) {
-		        e.printStackTrace();
-		    }
-		}
+                if (!line.isEmpty() && !errorMovie && splitStringByCommasIgnoringQuotes(line).length == 10) {
+                    //if (movieTitle.equals("Richie Rich")) {
+                      //  System.out.println("CUNT" + containsElement(errorlines, movieTitle));
+                    
+                    for (String genre : genres) {
+                        if (line.contains(genre)) {
+                            String genreFileName = genre.toLowerCase() + ".csv";
+                            FileWriter fileWriterGenre = new FileWriter(genreFileName, true);
+                            BufferedWriter genreFileWriter = new BufferedWriter(fileWriterGenre);
+                            genreFileWriter.write(line + "\n");
+                            genreFileWriter.close();
+                            fileWriterGenre.close();
+                            break; // Break the loop once the line is written to the correct file
+                        }
+                    }
+                }
+            }
+            movieFileReader.close();
+            fileReaderMovie.close();
+        }
+    }
 
 	
 	public static void categoryFile( String category, String originalFile) {
@@ -691,11 +756,9 @@ public class Movie implements Serializable {
     			manifestpart3Writer.close();
 
     			}
-    		catch(FileNotFoundException e) {
-    			System.out.println("file not found");
-    		}
+    		
     		catch (IOException e) {
-    			System.out.println("Error");
+    			e.printStackTrace();
     		}
 
 	    	
@@ -712,25 +775,23 @@ public class Movie implements Serializable {
 	            errorlines[errorIndex++] = line;
 	        }
 	        badRecordsReader.close();
-	        System.out.println(Arrays.toString(errorlines));
+	        
 	        while ((line = b1.readLine()) != null) {
 	            BufferedReader b2 = new BufferedReader(new FileReader(line));
-	            System.out.println("Processing file: " + line);
+	            
 	            while ((line = b2.readLine()) != null) {
 	            	if (!line.isEmpty() && !containsElement(errorlines, line)) {
 	            		String[] l = splitStringByCommasIgnoringQuotes(line);
 		                
-		                for (String s : l) {
-		                    System.out.println("Field: " + s);
-		                }
-		                System.out.println(Arrays.toString(l));
+		               
+		                
 		                Movie movie = new Movie(Integer.parseInt(l[0]), l[1], Integer.parseInt(l[2]), l[3], l[4],
 		                        Double.parseDouble(l[5]), l[6], l[7], l[8], l[9]);
-		                System.out.println("Created movie: " + movie.toString());
+		                
 		                ObjectOutputStream bro = new ObjectOutputStream(new FileOutputStream(movie.getGenre() + ".ser"));
 		                bro.writeObject(movie);
 		                bro.close();
-		                System.out.println("Serialized movie to: " + movie.getGenre() + ".ser");
+		                
 	            		
 		                // Write to the 
 	            	}
@@ -746,86 +807,71 @@ public class Movie implements Serializable {
 	}
 
 
-	public static Movie[][] do_part3(String part3_manifest){
-		
-		try {
-		String line;
-		BufferedReader part3_manifestReader = new BufferedReader(new FileReader(part3_manifest));
-		int fileCount = 0;
-		while ((line = part3_manifestReader.readLine()) != null) {
-            fileCount++;
-        }
-		part3_manifestReader.close();
-		
-		Movie[][] allMovies = new Movie[fileCount][];
-	    int index = 0;
-	    
-	    BufferedReader br = new BufferedReader(new FileReader(part3_manifest));
-	    while ((line = br.readLine()) != null) {
-	        FileInputStream fileInput = new FileInputStream(line);
-	        System.out.println(line);
-	        
-            File serFile = new File(line);
-            if (serFile.length() == 0) {
-                System.out.println("Skipping deserialization for empty file: " + serFile.getName());
-                continue;
+	public static Movie[][] make_arrays(String part3_manifest) {
+        try {
+            BufferedReader part3_manifestReader = new BufferedReader(new FileReader(part3_manifest));
+            int fileCount = 0;
+            String line;
+            while ((line = part3_manifestReader.readLine()) != null) {
+                fileCount++;
             }
-            
-	        ObjectInputStream movieInput = new ObjectInputStream(fileInput);
-	        
-	        Movie[] movies = new Movie[100]; // Initial capacity, adjust as needed
-            int count = 0;
-            
-            // Read movies from the binary file
-            while (true) {
-                try {
-                    Movie movie = (Movie) movieInput.readObject();
-                    if (count == movies.length) {
-                        // Resize the array if needed
-                        Movie[] newArray = new Movie[movies.length * 2];
-                        System.arraycopy(movies, 0, newArray, 0, movies.length);
-                        movies = newArray;
-                    }
-                    movies[count++] = movie;
-                } catch (EOFException e) {
-                    break; // End of file reached
-                }
-            }
-            
-        
-        
-	        // Trim the array to remove unused slots
-	        Movie[] trimmedMovies = new Movie[count];
-	        System.arraycopy(movies, 0, trimmedMovies, 0, count);
-	        allMovies[index++] = trimmedMovies;
-	        movieInput.close();
-				    	}
-	    br.close();
-			    return allMovies;
-		} catch (IOException | ClassNotFoundException e) {
-		    e.printStackTrace();
-		    return null;
-		}
-	}
-	        
+            part3_manifestReader.close();
 
-	
-		
-		
-//	
-	
-	
-	
-		
-		
-		
+            Movie[][] allMovies = new Movie[fileCount][];
+            int index = 0;
+
+            BufferedReader br = new BufferedReader(new FileReader(part3_manifest));
+            while ((line = br.readLine()) != null) {
+                FileInputStream fileInput = new FileInputStream(line);
+                File serFile = new File(line);
+
+                if (serFile.length() == 0) {
+                    allMovies[index++] = null; // Assign null for empty file
+                    continue;
+                }
+
+                ObjectInputStream movieInput = new ObjectInputStream(fileInput);
+
+                Movie[] movies = new Movie[100]; // Initial capacity, adjust as needed
+                int count = 0;
+
+                // Read movies from the binary file
+                while (true) {
+                    try {
+                        Movie movie = (Movie) movieInput.readObject();
+                        if (count == movies.length) {
+                            // Resize the array if needed
+                            Movie[] newArray = new Movie[movies.length * 2];
+                            System.arraycopy(movies, 0, newArray, 0, movies.length);
+                            movies = newArray;
+                        }
+                        movies[count++] = movie;
+                    } catch (EOFException e) {
+                        break; // End of file reached
+                    }
+                }
+
+                // Trim the array to remove unused slots
+                Movie[] trimmedMovies = new Movie[count];
+                System.arraycopy(movies, 0, trimmedMovies, 0, count);
+                allMovies[index++] = trimmedMovies;
+                movieInput.close();
+            }
+            br.close();
+            return allMovies;
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+	        
 	
 	
 	
 	
 	public static void main(String[] args) {
 		
-		System.out.println("hell");
+		
 		String part1_manifest = "part1_manifest.txt";
 		String part2_manifest = do_part1(part1_manifest);
 		
@@ -833,21 +879,15 @@ public class Movie implements Serializable {
 	
 		String part3_manifest = do_part2(part2_manifest);
 		
-		Movie[][] allMovies = do_part3(part3_manifest);
-		Movie[] moviefile = allMovies[2]; 
-
-		for (Movie movie : moviefile) {
-		    System.out.println(movie); // Assuming Movie class overrides toString() method
+		
+		for(int i=0;i<72;i++){
+			System.out.println(make_arrays(part3_manifest)[3][i]);
 		}
-//
-//		
-//		
-		System.out.println(moviefile[0].toString());
-		/*
-								do_part3(part3_manifest );
+								
+		
 																   
 		return;
-		*/
+		
 	}
 	
 	
