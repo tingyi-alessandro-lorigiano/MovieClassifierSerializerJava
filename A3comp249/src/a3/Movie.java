@@ -5,7 +5,11 @@ import java.util.Scanner;
 
 
 
-
+/**
+ * The Movie class represents a movie with various attributes such as year, title, duration, genre, rating, score, director, and actors.
+ * It also provides methods for reading, writing, and validating movie records.
+ * 
+ */
 public class Movie implements Serializable {
 	
 	protected int year;
@@ -52,31 +56,35 @@ public class Movie implements Serializable {
 											+ "\nPG-13"
 											+ "\nNC-17";
 
-	protected static int[] sizes={0,73,2,28,43,11,10,11,71,7,3,3,0,0,0,1,0};
-	public static String submenu = "------------------------------"
+	protected static int[] sizes={0,71,6,28,99,50,25,14,159,2,8,3,0,1,0,0,0};
+	protected static String submenu = "------------------------------"
 								  +"\n\tGenre Sub-Menu\n"
 								  +"------------------------------"
 								  +"\n1\tmusical\t\t\t(0 movies)"
-								  +"\n2\tcomedy\t\t\t(73 movies)"
-								  +"\n3\tanimation\t\t(2 movies)"
+								  +"\n2\tcomedy\t\t\t(171 movies)"
+								  +"\n3\tanimation\t\t(6 movies)"
 								  +"\n4\tadventure\t\t(28 movies)"
-								  +"\n5\tdrama\t\t\t(43 movies)"
-								  +"\n6\tcrime\t\t\t(11 movies)"
-								  +"\n7\tbiography\t\t(10 movies)"
-								  +"\n8\thorror\t\t\t(11 movies)"
-								  +"\n9\taction\t\t\t(71 movies)"
-								  +"\n10\tdocumentary\t\t(7 movies)"
-								  +"\n11\tfantasy\t\t\t(3 movies)"
+								  +"\n5\tdrama\t\t\t(99 movies)"
+								  +"\n6\tcrime\t\t\t(50 movies)"
+								  +"\n7\tbiography\t\t(25 movies)"
+								  +"\n8\thorror\t\t\t(14 movies)"
+								  +"\n9\taction\t\t\t(159 movies)"
+								  +"\n10\tdocumentary\t\t(2 movies)"
+								  +"\n11\tfantasy\t\t\t(8 movies)"
 								  +"\n12\tmystery\t\t\t(3 movies)"
 								  +"\n13\tsci-fi\t\t\t(0 movies)"
-								  +"\n14\tfamily\t\t\t(0 movies)"
+								  +"\n14\tfamily\t\t\t(1 movies)"
 								  +"\n15\twestern\t\t\t(0 movies)"
-								  +"\n16\tromance\t\t\t(1 movies)"
+								  +"\n16\tromance\t\t\t(0 movies)"
 								  +"\n17\tthriller\t\t(0 movies)"
 								  +"\n18\tExit"
 								  +"\n---------------------"
 								  +"\nEnter Your Choice:";
-
+	/**
+     * Main method to display the main menu.
+     * @param type The type of movies (e.g., genre).
+     * @param number The number of records for the given type.
+     */
 	public static void mainmenu(String type,int number){
 				  String mainmenu="-----------------------------"
 								 +"\n\tMain Menu\n"
@@ -89,12 +97,23 @@ public class Movie implements Serializable {
 		System.out.println(mainmenu);
 		}
 
+	/**
+     * Display a message for navigating movies.
+     * @param type The type of movies (e.g., genre).
+     * @param number The number of records for the given type.
+     */
 	public static void navigate_message(String type,int number){
 		String navigate ="Navigating "+type+" movies ("+number+")\n"
 						+"Enter Your Choice:";
 		System.out.println(navigate);
 	}
-
+	/**
+     * Performs part 3 of the program as described in the assignment.
+     * The menu is being output and the user can control what movies to display.
+     * By navigating with the letter commands: 'n', 'x', and 's',
+     * the user can choose the amount of different genre movies to output.
+     * @param manifest The manifest file containing information about the serialized classified movie files.
+     */
 	public static void do_part3(String manifest){
 		Scanner sc=new Scanner(System.in);
 		int option=0;
@@ -158,7 +177,19 @@ public class Movie implements Serializable {
 		}
 		}while(option!=18 && !opt.equals("x"));
 	}
-
+	/**
+     * Constructor to initialize a Movie object.
+     * @param year The year of the movie.
+     * @param title The title of the movie.
+     * @param duration The duration of the movie.
+     * @param genre The genre of the movie.
+     * @param rating The rating of the movie.
+     * @param score The score of the movie.
+     * @param director The director of the movie.
+     * @param actor1 The first actor of the movie.
+     * @param actor2 The second actor of the movie.
+     * @param actor3 The third actor of the movie.
+     */
 	public Movie(int year,String title,int duration, String genre,String rating,double score,String director, String actor1,String actor2,String actor3) {
 		this.year=year;
 		this.title=title;
@@ -233,7 +264,12 @@ public class Movie implements Serializable {
 		this.actor3=a3;
 	}
 	
-	
+	/**
+     * Checks if two Movie objects are equal.
+     * @param anotherMovie The other Movie object to compare.
+     * @return true if the two movies are equal, false otherwise.
+     */
+
 	public boolean equals(Movie anotherMovie) {
 		return this.actor3==anotherMovie.actor3 && 
 			   this.actor2==anotherMovie.actor2 &&
@@ -246,6 +282,11 @@ public class Movie implements Serializable {
 			   this.title==anotherMovie.title &&
 			   this.year==anotherMovie.year;
 	}
+	
+	/**
+     * Generates a string representation of the Movie object.
+     * @return A string representing the Movie object.
+     */
 	
 	@Override
 	public String toString() {
@@ -264,7 +305,11 @@ public class Movie implements Serializable {
 	public static boolean EmptyString(String str) {
 	     return str.length() == 0;
 	    }
-	  
+	/**
+     * Counts the number of letters in a string.
+     * @param str The input string.
+     * @return The number of letters in the string.
+     */
 	public static int LetterNumber(String str) {
         int count = 0;
         for (int i = 0; i < str.length(); i++) {
@@ -275,7 +320,12 @@ public class Movie implements Serializable {
         }
         return count;
     }
-	
+	 /**
+     * Counts the number of digits in the given string.
+     *
+     * @param str The input string to count digits.
+     * @return The number of digits in the string.
+     */
     public static int DigitNumber(String str) {
         int count = 0;
         for (int i = 0; i < str.length(); i++) {
@@ -287,6 +337,13 @@ public class Movie implements Serializable {
         return count;
     }
     
+    /**
+     * Checks if a given target string exists in the provided array.
+     *
+     * @param array         The array to search.
+     * @param targetString  The string to search for.
+     * @return True if the target string exists in the array, false otherwise.
+     */
     public static boolean Inside(String[] array, String targetString) {
         for (String str : array) {
             if (str.equals(targetString)) {
@@ -297,6 +354,13 @@ public class Movie implements Serializable {
         
     }
 	
+    /**
+     * Counts the number of lines in a text file.
+     *
+     * @param file The path to the text file.
+     * @return The number of lines in the file.
+     * @throws IOException If an I/O error occurs.
+     */
 	public static int lines(String file) throws IOException {
 		BufferedReader b = new BufferedReader(new FileReader(file));
 		int number_lines=0;
@@ -308,7 +372,12 @@ public class Movie implements Serializable {
 	}
 	
 	
-	
+	/**
+     * Checks if a given string contains a period ('.').
+     *
+     * @param str The input string to check.
+     * @return True if the string contains a period, false otherwise.
+     */
 	public static boolean Periods(String str) {
         for (int i = 0; i < str.length(); i++) {
             if (str.charAt(i) == '.') {
@@ -318,6 +387,14 @@ public class Movie implements Serializable {
         return false; 
     }
 	
+	/**
+     * Checks if a given record exists in a text file.
+     *
+     * @param record The record to search for.
+     * @param reader The BufferedReader to read lines from the file.
+     * @return True if the record exists in the file, false otherwise.
+     * @throws IOException If an I/O error occurs.
+     */
 	public static boolean checkRecord(String record, BufferedReader reader) throws IOException {
         String line;
         while ((line = reader.readLine()) != null) {
@@ -333,7 +410,12 @@ public class Movie implements Serializable {
 //	}
 	
 
-
+	/**
+     * Splits a string by commas while ignoring commas within double quotes.
+     *
+     * @param str The input string to split.
+     * @return An array of strings split by commas.
+     */
     public static String[] splitStringByCommasIgnoringQuotes(String str) {
         String[] parts = new String[10];
         int partIndex = 0;
@@ -366,6 +448,12 @@ public class Movie implements Serializable {
         return parts;
     }
 
+    /**
+     * Splits a string by commas, including commas within double quotes.
+     *
+     * @param str The input string to split.
+     * @return An array of strings split by commas.
+     */
     public static String[] splitStringByCommas(String str) {
         String[] parts = new String[10];
         int partIndex = 0;
@@ -399,6 +487,12 @@ public class Movie implements Serializable {
         return parts;
     }
 
+    /**
+     * Doubles the size of the input array.
+     *
+     * @param arr The input array to resize.
+     * @return A new array with double the size of the input array.
+     */
     private static String[] resizeArray(String[] arr) {
         int newSize = arr.length * 2; // Double the size
         String[] newArr = new String[newSize];
@@ -408,6 +502,13 @@ public class Movie implements Serializable {
         return newArr;
     }
 
+    /**
+     * Trims the input array to the specified size.
+     *
+     * @param arr  The input array to trim.
+     * @param size The size to trim the array to.
+     * @return A new array trimmed to the specified size.
+     */
     private static String[] trimArray(String[] arr, int size) {
         String[] trimmedArr = new String[size];
         for (int i = 0; i < size; i++) {
@@ -416,14 +517,13 @@ public class Movie implements Serializable {
         return trimmedArr;
     }
 
-
-
-
-
-
-	
-	
-	 
+    /**
+     * Processes a file containing movie records, identifies syntax and semantic errors, and writes them to an error file.
+     *
+     * @param infile The path to the input file containing movie records.
+     * @throws IOException            If an I/O error occurs while reading or writing files.
+     * @throws FileNotFoundException If the input file does not exist.
+     */	 
 	public static void error_1file(String infile) throws IOException, FileNotFoundException{
 		
 		String line;
@@ -630,8 +730,7 @@ public class Movie implements Serializable {
                 fileReaderE.close();
 
                 if (!line.isEmpty() && !errorMovie && splitStringByCommasIgnoringQuotes(line).length == 10) {
-                    //if (movieTitle.equals("Richie Rich")) {
-                      //  System.out.println("CUNT" + containsElement(errorlines, movieTitle));
+                  
                     
                     for (String genre : genres) {
                         if (line.contains(genre)) {
@@ -696,7 +795,6 @@ public class Movie implements Serializable {
 		 
 		try(BufferedReader b1 = new BufferedReader(new FileReader(file));) {
 		
-		// DELETING OLD FILES TO REWRITE
 		File badRecordsFile = new File("bad_records.txt");
 	    if (badRecordsFile.exists()) {
 	        badRecordsFile.delete();
@@ -713,7 +811,7 @@ public class Movie implements Serializable {
 		    }
 	    }
 	    
-		// DELETING OLD FILES TO REWRITE
+		
 		
 	    
 	    
@@ -777,6 +875,12 @@ public class Movie implements Serializable {
 	        badRecordsReader.close();
 	        
 	        while ((line = b1.readLine()) != null) {
+				Movie[] movieArray = new Movie[200];
+				int index = 0; // Index to keep track of the current position in the array
+
+				String leftSide = line.split("\\.")[0];
+	           
+
 	            BufferedReader b2 = new BufferedReader(new FileReader(line));
 	            
 	            while ((line = b2.readLine()) != null) {
@@ -788,16 +892,15 @@ public class Movie implements Serializable {
 		                Movie movie = new Movie(Integer.parseInt(l[0]), l[1], Integer.parseInt(l[2]), l[3], l[4],
 		                        Double.parseDouble(l[5]), l[6], l[7], l[8], l[9]);
 		                
-		                ObjectOutputStream bro = new ObjectOutputStream(new FileOutputStream(movie.getGenre() + ".ser"));
-		                bro.writeObject(movie);
-		                bro.close();
+		               
+	            		movieArray[index++] = movie;
 		                
-	            		
-		                // Write to the 
 	            	}
 	                
 	            }
 	            b2.close();
+				serializeMovieArray(movieArray, index, leftSide+".ser");
+
 	        }
 	        b1.close();
 	    } catch (IOException e) {
@@ -805,6 +908,17 @@ public class Movie implements Serializable {
 	    }
 	    return "part3_manifest.txt";
 	}
+
+	public static void serializeMovieArray(Movie[] movieArray, int size, String outputFile) {
+        try (ObjectOutputStream bro = new ObjectOutputStream(new FileOutputStream(outputFile))) {
+            for (int i = 0; i < size; i++) {
+                bro.writeObject(movieArray[i]);
+            }
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 	public static Movie[][] make_arrays(String part3_manifest) {
@@ -880,9 +994,7 @@ public class Movie implements Serializable {
 		String part3_manifest = do_part2(part2_manifest);
 		
 		
-		for(int i=0;i<72;i++){
-			System.out.println(make_arrays(part3_manifest)[3][i]);
-		}
+		do_part3(part3_manifest);
 								
 		
 																   
